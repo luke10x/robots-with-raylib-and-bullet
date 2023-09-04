@@ -1,0 +1,18 @@
+version: "3"
+services:
+  wasm:
+    build:
+      context: wasm
+      dockerfile: Dockerfile
+    working_dir: /mnt/wasm
+    ports:
+      - "${WASM_PORT:-9901}:8080"
+    volumes:
+      - ./wasm:/mnt/wasm:rw
+      - ./assets:/mnt/assets:ro
+      - ./src:/mnt/src:ro
+    entrypoint: "bash -c"
+    command:
+      - |
+        echo Starting a web server in $(pwd)
+        python3 -mhttp.server 8080
